@@ -1,27 +1,36 @@
-function update_element(url, elem)
+function update_link(url, link)
 {
     $.get(url, function(data){
         starbar = $("div[class='starbar-meta']",data);
-        rating =    '<br><b>&nbsp;IMDb Rating:</b> ' + 
-                    $("b",starbar).text() + 
-                    ' (' + $("a",starbar).text() + ')<br><br>';
+        rating = $("b",starbar).text();
+        voters = $("a",starbar).text();
+        full_rating = rating + '(' + voters + ')';
 
-        elem.html(elem.html().replace('<br><br>',rating));
+        // Update link
+        link_rating = 'IMBd Rating: ' + full_rating;
+        $("img",link).attr('title', link_rating);
+        $("img",link).attr('alt', link_rating);
+        link.attr('title', link_rating);
+        link.attr('alt', link_rating);
 
+        // Update cover view
+        parent_link = link.parent();
+        if (parent_link.is("td") && parent_link.attr('class') == 'nzbtable_data') {
+            rating_line =   '<br><b>&nbsp;IMDb Rating:</b> '
+                            + full_rating + '<br><br>';
+            parent_link.html(parent_link.html().replace('<br><br>',rating_line));
+        }
     });
-
 }
 
-elements = $("tr.NewOff td.nzbtable_data a[href^='redirect.php']")
+links = $("a[href^='redirect.php']");
 
-$.each(elements,function(i,element){
-    elem = $(element).parent();
-    url = $(element).attr('href');
-    url = url.match(/http.*$/)
+$.each(links,function(i,link){
+    link = $(link);
+    url = link.attr('href');
+    url = url.match('http://www.imdb.com/.*$');
     if (url && url[0]) {
-        url = url[0];    
-        if (url.match(/imdb/)) {
-            update_element(url, elem);
-        }
+        imdb_url = url[0];
+        update_link(imdb_url, link);
     }
 });
