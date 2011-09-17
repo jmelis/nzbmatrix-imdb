@@ -2,9 +2,15 @@ function update_link(url, link)
 {
     $.get(url, function(data){
         starbar = $("div[class='starbar-meta']",data);
-        rating = $("b",starbar).text();
-        voters = $("a",starbar).text();
-        full_rating = rating + '(' + voters + ')';
+
+        if ($("b",starbar).size() > 0) {
+            rating = $("b",starbar).text();
+            voters = $("a",starbar).text();
+            full_rating = rating + ' (' + voters + ')';
+        } else {
+            // awaiting votes
+            full_rating = $("small",starbar).text();
+        }
 
         // Update link
         link_rating = 'IMBd Rating: ' + full_rating;
