@@ -7,8 +7,10 @@
         "matches" : ["http://nzbmatrix.com/*"],
         "js": ["jquery-1.6.4.min.js","nzbmatrix-imdb.js"]
         }
-    ], 
+    ],
     "permissions": [
-        "http://www.imdb.com/*"
+        "http://www.imdbapi.com/*"
+        //"http://www.imdb.com/*",
+        //"http://imdb.com/*"
     ]
 }

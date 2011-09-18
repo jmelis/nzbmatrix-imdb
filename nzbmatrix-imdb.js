@@ -1,15 +1,16 @@
 function update_link(url, link)
 {
-    $.get(url, function(data){
-        starbar = $("div[class='starbar-meta']",data);
+    movie_id = url.match("tt[0-9]+");
+    imdbapi_url = "http://www.imdbapi.com/?i=" + movie_id;
 
-        if ($("b",starbar).size() > 0) {
-            rating = $("b",starbar).text();
-            voters = $("a",starbar).text();
-            full_rating = rating + ' (' + voters + ')';
+    $.getJSON(imdbapi_url, function(json){
+        rating = json["Rating"];
+
+        if (rating.match("N/A")){
+            full_rating = "Not available.";
         } else {
-            // awaiting votes
-            full_rating = $("small",starbar).text();
+            voters = json["Votes"];
+            full_rating = rating + "/10" + ' (' + voters + ' votes)';
         }
 
         // Update link
