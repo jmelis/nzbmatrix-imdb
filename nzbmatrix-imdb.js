@@ -20,12 +20,24 @@ function update_link(url, link)
         link.attr('title', link_rating);
         link.attr('alt', link_rating);
 
-        // Update cover view
         parent_link = link.parent();
-        if (parent_link.is("td") && parent_link.attr('class') == 'nzbtable_data') {
+        if (parent_link.is("td") && parent_link.attr('class') == 'nzbtable_data')
+        {
+        // cover view
             rating_line =   '<br><b>&nbsp;IMDb Rating:</b> '
                             + full_rating + '<br><br>';
             parent_link.html(parent_link.html().replace('<br><br>',rating_line));
+        }
+        else if(parent_link.is("td") && parent_link.attr('class') == 'newoff')
+        {
+            // grid view
+            rating_line = '<br><b>IMDb Rating:</b> '
+                            + full_rating;
+            movie_img = $("a:first img",parent_link);
+            desc = movie_img.attr("onmouseover");
+            desc = desc.replace(/'(.*?)'/,"'$1 " + rating_line + "'");
+            movie_img.attr("onmouseover", desc);
+            
         }
     });
 }
