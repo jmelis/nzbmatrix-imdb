@@ -34,7 +34,7 @@ links = $("a[href^='redirect.php']");
 $.each(links,function(i,link){
     link = $(link);
     url = link.attr('href');
-    url = url.match('http://www.imdb.com/.*$');
+    url = url.match('http://(www\.)?imdb\.com/.*$');
     if (url && url[0]) {
         imdb_url = url[0];
         update_link(imdb_url, link);
