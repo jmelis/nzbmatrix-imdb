@@ -1,16 +1,18 @@
 {
-    "name": "NzbmatrixImdb",
+    "name": "NZBMatrixIMDb",
     "version": "0.1",
-    "description": "A plain text description",
+    "description": "Small Chrome extension that adds IMDb information to
+NZBMatrix",
     "content_scripts": [
         {
         "matches" : ["http://nzbmatrix.com/*"],
         "js": ["jquery-1.6.4.min.js","nzbmatrix-imdb.js"]
         }
     ],
+    "icons": {
+        "48":  "nzbmatriximdb48.png",
+        "128": "nzbmatriximdb128.png" },
     "permissions": [
         "http://www.imdbapi.com/*"
-        //"http://www.imdb.com/*",
-        //"http://imdb.com/*"
     ]
 }
