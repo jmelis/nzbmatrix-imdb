@@ -10,16 +10,17 @@ Report issues here:
 
 Details
 -------
-It will add to the 'alt' element of all IMDb links the IMDBb rating. If the
-cover view is selected, it will the following information to every element
-that has an IMDb link:
+This extension will modify the NZBMatrix interface to include some IMDb
+information. It modifies all the IMDb links to include the IMDb reating. It
+also enhances the Cover View by adding the following information to every
+element that has an IMDb link:
 
 * Rating
 * Director
 * Actors
 * Plot
 
-If the grid view is selected, it will add to the mouseover banner:
+If the Grid View is selected, the mouseover banner will display:
 
 * Rating
 * Director
