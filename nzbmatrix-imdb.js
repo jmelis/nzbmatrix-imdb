@@ -1,8 +1,8 @@
-function rating(json){
+function rating(json) {
     var full_rating;
     var rating = json["Rating"];
 
-    if (rating.match("N/A")){
+    if (rating.match("N/A")) {
         full_rating = "Not available.";
     } else {
         voters = json["Votes"];
@@ -16,7 +16,7 @@ function infoline(title, info) {
     return '<br><b>' + title + ':</b>&nbsp;' + info;
 }
 
-function update_coverview(element, json){
+function update_coverview(element, json) {
     var text = element.html();
 
     var sep = "<br><br>";
@@ -25,7 +25,7 @@ function update_coverview(element, json){
 
     // css & html style
     element.removeAttr("nowrap");
-    element.css("padding-left","8px");
+    element.css("padding-left", "8px");
 
     // IMDb info
     imdb_info  = infoline("IMDb Rating", rating(json));
@@ -45,7 +45,7 @@ function update_coverview(element, json){
 }
 
 /* Grid view */
-function update_gridview(element, json){
+function update_gridview(element, json) {
     var rating_line;
     var movie_img;
     var desc;
@@ -55,17 +55,17 @@ function update_gridview(element, json){
     imdb_info += infoline("Director", json["Director"]);
     imdb_info += infoline("Actors", json["Actors"]);
 
-    movie_img = $("a:first img",element); // this is the child 'img'
+    movie_img = $("a:first img", element); // this is the child 'img'
     desc = movie_img.attr("onmouseover");
-    desc = desc.replace(/'(.*?)'/,"'$1 " + imdb_info + "'");
+    desc = desc.replace(/'(.*?)'/, "'$1 " + imdb_info + "'");
     movie_img.attr("onmouseover", desc);
 }
 
-function update_link(link, json){
+function update_link(link, json) {
     var link_rating = 'IMBd Rating: ' + rating(json);
 
-    $("img",link).attr('title', link_rating);
-    $("img",link).attr('alt', link_rating);
+    $("img", link).attr('title', link_rating);
+    $("img", link).attr('alt', link_rating);
     link.attr('title', link_rating);
     link.attr('alt', link_rating);
 }
@@ -75,19 +75,16 @@ function process_link(url, link)
     var movie_id = url.match("tt[0-9]+");
     var imdbapi_url = "http://www.imdbapi.com/?i=" + movie_id;
 
-    $.getJSON(imdbapi_url, function(json){
+    $.getJSON(imdbapi_url, function(json) {
         // Update link
         update_link(link, json);
 
         // Update parent element depending on the current view
         parent = link.parent();
 
-        if (parent.is("td") && parent.attr('class') == 'nzbtable_data')
-        {
+        if (parent.is("td") && parent.attr('class') == 'nzbtable_data') {
             update_coverview(parent, json);
-        }
-        else if(parent.is("td") && parent.attr('class') == 'newoff')
-        {
+        } else if(parent.is("td") && parent.attr('class') == 'newoff') {
             update_gridview(parent, json);
         }
     });
@@ -95,7 +92,7 @@ function process_link(url, link)
 
 links = $("a[href^='redirect.php']");
 
-$.each(links,function(i,link){
+$.each(links, function(i, link) {
     link = $(link);
     url = link.attr('href');
     url = url.match('http://(www\.)?imdb\.com/.*$');
