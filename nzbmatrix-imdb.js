@@ -1,43 +1,94 @@
-function update_link(url, link)
+function rating(json){
+    var full_rating;
+    var rating = json["Rating"];
+
+    if (rating.match("N/A")){
+        full_rating = "Not available.";
+    } else {
+        voters = json["Votes"];
+        full_rating = rating + "/10" + ' (' + voters + ' votes)';
+    }
+    return full_rating;
+}
+
+/* Cover View */
+function infoline(title, info) {
+    return '<br><b>' + title + ':</b>&nbsp;' + info;
+}
+
+function update_coverview(element, json){
+    var text = element.html();
+
+    var sep = "<br><br>";
+    var first_part;
+    var second_part;
+
+    // css & html style
+    element.removeAttr("nowrap");
+    element.css("padding-left","8px");
+
+    // IMDb info
+    imdb_info  = infoline("IMDb Rating", rating(json));
+    imdb_info += infoline("Director", json["Director"]);
+    imdb_info += infoline("Actors", json["Actors"]);
+    imdb_info += infoline("Plot", json["Plot"]);
+    imdb_info += sep;
+
+    first_part  = text.substring(0, text.indexOf(sep));
+    second_part = text.substring(text.indexOf(sep) + sep.length, text.length);
+
+    first_part = first_part.replace(/&nbsp;/g, "");
+
+    text = first_part + imdb_info + second_part;
+
+    element.html(text);
+}
+
+/* Grid view */
+function update_gridview(element, json){
+    var rating_line;
+    var movie_img;
+    var desc;
+    var imdb_info;
+
+    imdb_info  = infoline("IMDb Rating", rating(json));
+    imdb_info += infoline("Director", json["Director"]);
+    imdb_info += infoline("Actors", json["Actors"]);
+
+    movie_img = $("a:first img",element); // this is the child 'img'
+    desc = movie_img.attr("onmouseover");
+    desc = desc.replace(/'(.*?)'/,"'$1 " + imdb_info + "'");
+    movie_img.attr("onmouseover", desc);
+}
+
+function update_link(link, json){
+    var link_rating = 'IMBd Rating: ' + rating(json);
+
+    $("img",link).attr('title', link_rating);
+    $("img",link).attr('alt', link_rating);
+    link.attr('title', link_rating);
+    link.attr('alt', link_rating);
+}
+
+function process_link(url, link)
 {
-    movie_id = url.match("tt[0-9]+");
-    imdbapi_url = "http://www.imdbapi.com/?i=" + movie_id;
+    var movie_id = url.match("tt[0-9]+");
+    var imdbapi_url = "http://www.imdbapi.com/?i=" + movie_id;
 
     $.getJSON(imdbapi_url, function(json){
-        rating = json["Rating"];
-
-        if (rating.match("N/A")){
-            full_rating = "Not available.";
-        } else {
-            voters = json["Votes"];
-            full_rating = rating + "/10" + ' (' + voters + ' votes)';
-        }
-
         // Update link
-        link_rating = 'IMBd Rating: ' + full_rating;
-        $("img",link).attr('title', link_rating);
-        $("img",link).attr('alt', link_rating);
-        link.attr('title', link_rating);
-        link.attr('alt', link_rating);
+        update_link(link, json);
 
-        parent_link = link.parent();
-        if (parent_link.is("td") && parent_link.attr('class') == 'nzbtable_data')
+        // Update parent element depending on the current view
+        parent = link.parent();
+
+        if (parent.is("td") && parent.attr('class') == 'nzbtable_data')
         {
-        // cover view
-            rating_line =   '<br><b>&nbsp;IMDb Rating:</b> '
-                            + full_rating + '<br><br>';
-            parent_link.html(parent_link.html().replace('<br><br>',rating_line));
+            update_coverview(parent, json);
         }
-        else if(parent_link.is("td") && parent_link.attr('class') == 'newoff')
+        else if(parent.is("td") && parent.attr('class') == 'newoff')
         {
-            // grid view
-            rating_line = '<br><b>IMDb Rating:</b> '
-                            + full_rating;
-            movie_img = $("a:first img",parent_link);
-            desc = movie_img.attr("onmouseover");
-            desc = desc.replace(/'(.*?)'/,"'$1 " + rating_line + "'");
-            movie_img.attr("onmouseover", desc);
-            
+            update_gridview(parent, json);
         }
     });
 }
@@ -50,6 +101,6 @@ $.each(links,function(i,link){
     url = url.match('http://(www\.)?imdb\.com/.*$');
     if (url && url[0]) {
         imdb_url = url[0];
-        update_link(imdb_url, link);
+        process_link(imdb_url, link);
     }
 });
