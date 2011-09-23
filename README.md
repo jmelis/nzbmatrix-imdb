@@ -11,9 +11,9 @@ Report issues here:
 Details
 -------
 This extension modifies the NZBMatrix interface to include IMDb information.
-It modifies all the IMDb links to include the IMDb reating. It also enhances
-the Cover View by adding the following information to every element that has
-an IMDb link:
+It adds to all IMDb links the IMDb rating. It also enhances the Cover View and
+the List View by adding the following information to every element that has an
+IMDb link:
 
 * Rating
 * Director
@@ -35,5 +35,9 @@ Installation
 
 Changelog
 ---------
+### 0.2.0 ###
+* Allow https://nzbmatrix.com
+* Enhance List View
+
 ### 0.1.0 ###
 * First release.
