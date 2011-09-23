@@ -1,6 +1,6 @@
 {
     "name": "NZBMatrixIMDb",
-    "version": "0.1",
+    "version": "0.2",
     "description": "Small Chrome extension that adds IMDb information to
 NZBMatrix",
     "content_scripts": [
