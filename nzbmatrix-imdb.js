@@ -11,11 +11,20 @@ function rating(json) {
     return full_rating;
 }
 
-/* Cover View */
-function infoline(title, info) {
-    return '<br><b>' + title + ':</b>&nbsp;' + info;
+function infoline(title, info, start_str, end_str) {
+    var info;
+
+    if (start_str == null) {
+        start_str = "<br>";
+    }
+    if (end_str == null) {
+        end_str = "";
+    }
+    info = start_str + '<b>' + title + ':</b>&nbsp;' + info + end_str;
+    return info;
 }
 
+/* Cover View */
 function update_coverview(element, json) {
     var text = element.html();
 
@@ -61,6 +70,22 @@ function update_gridview(element, json) {
     movie_img.attr("onmouseover", desc);
 }
 
+/* List view */
+function update_listview(element, json) {
+    var imdb_info;
+    var div = $("div[id^='descr']",element.parent());
+
+    div.parent().removeAttr("nowrap");
+
+    // IMDb info
+    imdb_info  = infoline("IMDb Rating", rating(json), "&nbsp;", "<br>");
+    imdb_info += infoline("Director", json["Director"], "&nbsp;", "<br>");
+    imdb_info += infoline("Actors", json["Actors"], "&nbsp;", "<br>");
+    imdb_info += infoline("Plot", json["Plot"], "&nbsp;", "<br>");
+
+    div.html(div.html() + imdb_info);
+}
+
 function update_link(link, json) {
     var link_rating = 'IMBd Rating: ' + rating(json);
 
@@ -84,7 +109,9 @@ function process_link(url, link)
 
         if (parent.is("td") && parent.attr('class') == 'nzbtable_data') {
             update_coverview(parent, json);
-        } else if(parent.is("td") && parent.attr('class') == 'newoff') {
+        } else if (parent.is("td") && parent.attr('class') == 'info nzbtable_data') {
+            update_listview(parent, json);
+        } else if (parent.is("td") && parent.attr('class') == 'newoff') {
             update_gridview(parent, json);
         }
     });
