@@ -1,3 +1,14 @@
+function integer_comma(num) {
+    //http://www.mredkj.com/javascript/nfbasic.html
+    num_str = num + ''; // cast to string
+    comma_regex = /(\d+)(\d{3})/;
+    while (comma_regex.test(num_str)) {
+        num_str = num_str.replace(comma_regex, '$1' + ',' + '$2');
+
+    }
+    return num_str;
+}
+
 function rating(json) {
     var full_rating;
     var rating = json["Rating"];
@@ -5,7 +16,7 @@ function rating(json) {
     if (rating.match("N/A")) {
         full_rating = "Not available.";
     } else {
-        voters = json["Votes"];
+        voters = integer_comma(json["Votes"]);
         full_rating = rating + "/10" + ' (' + voters + ' votes)';
     }
     return full_rating;
