@@ -29,6 +29,8 @@ If the Grid View is selected, the mouseover banner will display:
 To retrieve IMDb information, this extension uses [The IMDb API v2.0 by
 Brian Fritz](http://www.imdbapi.com/).
 
+Tags: nzb, nzbmatrix, imdb
+
 Installation
 ------------
 * Clone the repository and then install as an 'unpacked extension' inside Chrome.
