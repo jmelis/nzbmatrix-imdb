@@ -1,6 +1,12 @@
+var views; //localStorage -- Global
+
+function get_options(view) {
+    return views[view];
+}
+
 function integer_comma(num) {
     //http://www.mredkj.com/javascript/nfbasic.html
-    num_str = num + ''; // cast to string
+    num_str = num + '';
     comma_regex = /(\d+)(\d{3})/;
     while (comma_regex.test(num_str)) {
         num_str = num_str.replace(comma_regex, '$1' + ',' + '$2');
@@ -22,8 +28,10 @@ function rating(json) {
     return full_rating;
 }
 
-function infoline(title, info, start_str, end_str) {
-    var info;
+function info_view(view, json, start_str, end_str) {
+    var info = '';
+    var opt_info;
+    var options;
 
     if (start_str == null) {
         start_str = "<br>";
@@ -31,7 +39,19 @@ function infoline(title, info, start_str, end_str) {
     if (end_str == null) {
         end_str = "";
     }
-    info = start_str + '<b>' + title + ':</b>&nbsp;' + info + end_str;
+    options = get_options(view);
+
+    for (option in  options) {
+        option = options[option];
+        if (option == "IMDb Rating") {
+            opt_info = rating(json);
+        } else {
+            opt_info = json[option];
+        }
+
+        info += start_str + '<b>' + option + ':</b>&nbsp;' + opt_info + end_str;
+    }
+
     return info;
 }
 
@@ -48,11 +68,7 @@ function update_coverview(element, json) {
     element.css("padding-left", "8px");
 
     // IMDb info
-    imdb_info  = infoline("IMDb Rating", rating(json));
-    imdb_info += infoline("Director", json["Director"]);
-    imdb_info += infoline("Actors", json["Actors"]);
-    imdb_info += infoline("Plot", json["Plot"]);
-    imdb_info += sep;
+    imdb_info = info_view("cover", json) + sep;
 
     first_part  = text.substring(0, text.indexOf(sep));
     second_part = text.substring(text.indexOf(sep) + sep.length, text.length);
@@ -71,9 +87,7 @@ function update_gridview(element, json) {
     var desc;
     var imdb_info;
 
-    imdb_info  = infoline("IMDb Rating", rating(json));
-    imdb_info += infoline("Director", json["Director"]);
-    imdb_info += infoline("Actors", json["Actors"]);
+    imdb_info = info_view("grid", json);
 
     movie_img = $("a:first img", element); // this is the child 'img'
     desc = movie_img.attr("onmouseover");
@@ -89,21 +103,18 @@ function update_listview(element, json) {
     div.parent().removeAttr("nowrap");
 
     // IMDb info
-    imdb_info  = infoline("IMDb Rating", rating(json), "&nbsp;", "<br>");
-    imdb_info += infoline("Director", json["Director"], "&nbsp;", "<br>");
-    imdb_info += infoline("Actors", json["Actors"], "&nbsp;", "<br>");
-    imdb_info += infoline("Plot", json["Plot"], "&nbsp;", "<br>");
+    imdb_info = info_view("list", json, "&nbsp;", "<br>");
 
     div.html(div.html() + imdb_info);
 }
 
 function update_link(link, json) {
-    var link_rating = 'IMBd Rating: ' + rating(json);
+    var imdb_info = info_view("hover", json, "", "\n");
 
-    $("img", link).attr('title', link_rating);
-    $("img", link).attr('alt', link_rating);
-    link.attr('title', link_rating);
-    link.attr('alt', link_rating);
+    $("img", link).attr('title', imdb_info);
+    $("img", link).attr('alt', imdb_info);
+    link.attr('title', imdb_info);
+    link.attr('alt', imdb_info);
 }
 
 function process_link(url, link)
@@ -128,14 +139,17 @@ function process_link(url, link)
     });
 }
 
-links = $("a[href^='redirect.php']");
+chrome.extension.sendRequest({localstorage: "views"}, function(response) {
+    views = JSON.parse(response.value); //get it from localStorage
+    links = $("a[href^='redirect.php']");
 
-$.each(links, function(i, link) {
-    link = $(link);
-    url = link.attr('href');
-    url = url.match('http://(www\.)?imdb\.com/.*$');
-    if (url && url[0]) {
-        imdb_url = url[0];
-        process_link(imdb_url, link);
-    }
+    $.each(links, function(i, link) {
+        link = $(link);
+        url = link.attr('href');
+        url = url.match('http://(www\.)?imdb\.com/.*$');
+        if (url && url[0]) {
+            imdb_url = url[0];
+            process_link(imdb_url, link);
+        }
+    });
 });
