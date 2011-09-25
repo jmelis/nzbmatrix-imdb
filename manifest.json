@@ -9,6 +9,7 @@ NZBMatrix",
         "js": ["jquery-1.6.4.min.js","nzbmatrix-imdb.js"]
         }
     ],
+    "background_page": "background.html",
     "options_page": "options.html",
     "icons": {
         "48":  "nzbmatriximdb48.png",
