@@ -1,5 +1,61 @@
 <html>
 <head><title>NZBMatrixIMDb Options</title>
+<style>
+
+body
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+}
+
+h1
+{
+  -webkit-padding-end: 24px;
+  -webkit-user-select: none;
+  color: #53637d;
+  font-size: 200%;
+  font-weight: normal;
+  margin: 0;
+  padding-bottom: 4px;
+  padding-top: 13px;
+  text-shadow: white 0 1px 2px;
+  margin-bottom: 20px;
+}
+
+table
+{
+    background: #fff;
+    margin-bottom: 20px;
+    /*margin: 45px;
+    width: 480px;
+    border-collapse: collapse;*/
+    text-align: left;
+}
+
+th
+{
+    font-size: 14px;
+    font-weight: normal;
+    color: #53637d;
+    padding: 10px 8px;
+    border-bottom: 2px solid #eeeeee;
+    }
+td
+{
+    color: #53637d;
+    padding: 9px 8px 0px 8px;
+}
+
+.center {
+    text-align: center;
+}
+
+tbody tr:hover td
+{
+    color: #3A4557;
+}
+
+</style>
 <script src= "jquery-1.6.4.min.js" type="text/javascript"></script>
 <script src= "options.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -20,7 +76,8 @@ function table_generator() {
 
 
     table = "<table>";
-    table += "<tr><th></th><th>Cover View</th><th>List View</th><th>Grid View</th><th>Hover Link</th></tr>";
+    table += "<thead></thead><tr><th></th><th>Cover View</th><th>List View</th><th>Grid View</th><th>Hover Link</th></tr></thead>";
+    table += "<tbody>";
     for (option in OPTIONS) {
         option = OPTIONS[option];
 
@@ -34,10 +91,11 @@ function table_generator() {
             } else {
                 checked = "";
             }
-            table += "<td><input type='checkbox' name='"+type+"' value='"+option+"' "+ checked +"/></td>";
+            table += "<td class='center'><input type='checkbox' name='"+type+"' value='"+option+"' "+ checked +"/></td>";
         }
         table +="</tr>";
     }
+    table += "</tbody>";
     table += "</table>";
 
     $('#table').html(table);
@@ -60,6 +118,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+    <h1>NZBMatrixIMDb Configuration</h1>
     <div id="table"></div>
     <input id="save" type="submit" value="Save" />
     <input id="defaults" type="submit" value="Load Defaults" />
