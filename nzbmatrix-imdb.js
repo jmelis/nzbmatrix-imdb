@@ -28,6 +28,24 @@ function rating(json) {
     return full_rating;
 }
 
+function decorate(view, option, info) {
+    var str;
+
+    switch(view)
+    {
+    case "cover":
+    case "grid":
+      str = '<br><b>' + option + ':</b>&nbsp;' + info;
+      break;
+    case "list":
+      str = '&nbsp;<b>' + option + ':</b>&nbsp;' + info + '<br>';
+      break;
+    case "hover":
+      str =  option + ': ' + info + "\n";
+    }
+    return str;
+}
+
 function info_view(view, json, start_str, end_str) {
     var info = '';
     var opt_info;
@@ -49,7 +67,7 @@ function info_view(view, json, start_str, end_str) {
             opt_info = json[option];
         }
 
-        info += start_str + '<b>' + option + ':</b>&nbsp;' + opt_info + end_str;
+        info += decorate(view, option, opt_info);
     }
 
     return info;
