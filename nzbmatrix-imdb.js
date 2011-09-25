@@ -106,6 +106,8 @@ function update_gridview(element, json) {
     var imdb_info;
 
     imdb_info = info_view("grid", json);
+    imdb_info = imdb_info.replace(/'/g,"&#39;")
+
 
     movie_img = $("a:first img", element); // this is the child 'img'
     desc = movie_img.attr("onmouseover");
