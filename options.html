@@ -66,32 +66,33 @@ function save_options() {
         opts = $.map($("input:checked[name='"+type+"']"),function(opt){
             return $(opt).val();
         });
-        set_options(type, opts);
+        Views.set(type, opts);
     }
 }
 
 function table_generator() {
     var table;
     var checked;
+    var fields = Fields.get();
 
 
     table = "<table>";
     table += "<thead></thead><tr><th></th><th>Cover View</th><th>List View</th><th>Grid View</th><th>Hover Link</th></tr></thead>";
     table += "<tbody>";
-    for (option in OPTIONS) {
-        option = OPTIONS[option];
+    for (field in fields) {
+        field = fields[field];
 
         table += "<tr>";
-        table += "<td>" + option + "</td>";
+        table += "<td>" + field + "</td>";
 
         for (type in TYPES) {
             type = TYPES[type];
-            if (is_checked(type,option)) {
+            if (Views.is_checked(type, field)) {
                 checked = " checked='checked' ";
             } else {
                 checked = "";
             }
-            table += "<td class='center'><input type='checkbox' name='"+type+"' value='"+option+"' "+ checked +"/></td>";
+            table += "<td class='center'><input type='checkbox' name='"+type+"' value='"+field+"' "+ checked +"/></td>";
         }
         table +="</tr>";
     }
