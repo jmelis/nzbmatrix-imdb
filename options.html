@@ -56,11 +56,14 @@ tbody tr:hover td
 }
 
 </style>
-<script src= "jquery-1.6.4.min.js" type="text/javascript"></script>
-<script src= "model.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+<script src= "js/model.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 function save_options() {
+    Fields.set($.map($("td.field"),function(i){return $(i).text();}));
+
     for (type in TYPES) {
         type = TYPES[type];
         opts = $.map($("input:checked[name='"+type+"']"),function(opt){
@@ -83,7 +86,7 @@ function table_generator() {
         field = fields[field];
 
         table += "<tr>";
-        table += "<td>" + field + "</td>";
+        table += "<td class='field'>" + field + "</td>";
 
         for (type in TYPES) {
             type = TYPES[type];
@@ -104,6 +107,7 @@ function table_generator() {
 
 $(document).ready(function(){
     table_generator();
+    $("tbody").sortable().disableSelection();
     $('#save').click(function(){
         save_options();
     });
@@ -119,9 +123,9 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-    <h1>NZBMatrixIMDb Configuration</h1>
-    <div id="table"></div>
-    <input id="save" type="submit" value="Save" />
-    <input id="defaults" type="submit" value="Load Defaults" />
+<h1>NZBMatrixIMDb Configuration</h1>
+<div id="table"></div>
+<input id="save" type="submit" value="Save" />
+<input id="defaults" type="submit" value="Load Defaults" />
 </body>
 </html>
