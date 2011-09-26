@@ -73,7 +73,6 @@ function info_view(view, json, start_str, end_str) {
     return info;
 }
 
-/* Cover View */
 function update_coverview(element, json) {
     var text = element.html();
 
@@ -85,7 +84,6 @@ function update_coverview(element, json) {
     element.removeAttr("nowrap");
     element.css("padding-left", "8px");
 
-    // IMDb info
     imdb_info = info_view("cover", json) + sep;
 
     first_part  = text.substring(0, text.indexOf(sep));
@@ -98,7 +96,6 @@ function update_coverview(element, json) {
     element.html(text);
 }
 
-/* Grid view */
 function update_gridview(element, json) {
     var rating_line;
     var movie_img;
@@ -106,8 +103,7 @@ function update_gridview(element, json) {
     var imdb_info;
 
     imdb_info = info_view("grid", json);
-    imdb_info = imdb_info.replace(/'/g,"&#39;")
-
+    imdb_info = imdb_info.replace(/'/g,"&#39;") // escape single_quotes
 
     movie_img = $("a:first img", element); // this is the child 'img'
     desc = movie_img.attr("onmouseover");
@@ -115,14 +111,12 @@ function update_gridview(element, json) {
     movie_img.attr("onmouseover", desc);
 }
 
-/* List view */
 function update_listview(element, json) {
     var imdb_info;
     var div = $("div[id^='descr']",element.parent());
 
     div.parent().removeAttr("nowrap");
 
-    // IMDb info
     imdb_info = info_view("list", json, "&nbsp;", "<br>");
 
     div.html(div.html() + imdb_info);
@@ -159,8 +153,9 @@ function process_link(url, link)
     });
 }
 
+// Request 'views' from localStorage. Start to process after receiving.
 chrome.extension.sendRequest({localstorage: "views"}, function(response) {
-    views = JSON.parse(response.value); //get it from localStorage
+    views = JSON.parse(response.value);
     links = $("a[href^='redirect.php']");
 
     $.each(links, function(i, link) {
