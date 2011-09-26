@@ -14,21 +14,18 @@ Alternatively, you can report issues here:
 
 Details
 -------
-This extension modifies the NZBMatrix interface to include IMDb information.
-It adds to all IMDb links the IMDb rating. It also enhances the Cover View and
-the List View by adding the following information to every element that has an
-IMDb link:
 
-- Rating
-- Director
-- Actors
-- Plot
+This extension modifies the NZBMatrix interface to include IMDb information. It
+features an options page to enable and disable IMDb fields depending on the
+selected view. It's also possible to reorder the fields by dragging and
+dropping the rows.
 
-If the Grid View is selected, the mouseover banner will display:
+This extension acts on:
 
-- Rating
-- Director
-- Actors
+- Every link with an IMDb url
+- Cover View 
+- List View
+- Grid View
 
 To retrieve IMDb information, this extension uses [The IMDb API v2.0 by
 Brian Fritz](http://www.imdbapi.com/).
@@ -42,6 +39,10 @@ Installation
 
 Changelog
 ---------
+### 0.3.0 ###
+- Add an options page for enabling & disabling IMDb fields and sorting them.
+- Thousands separator for rating.
+
 ### 0.2.0 ###
 - Allow https://nzbmatrix.com
 - Enhance List View
