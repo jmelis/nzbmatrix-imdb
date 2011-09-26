@@ -19,7 +19,7 @@ h1
   padding-bottom: 4px;
   padding-top: 13px;
   text-shadow: white 0 1px 2px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 table
@@ -53,6 +53,10 @@ td
 tbody tr:hover td
 {
     color: #3A4557;
+}
+
+.tip {
+    font-style:italic;
 }
 
 </style>
@@ -107,8 +111,12 @@ function table_generator() {
 
 $(document).ready(function(){
     table_generator();
-    $("tbody").sortable().disableSelection();
-    $('#save').click(function(){
+    $("tbody").sortable({
+        update: function(event, ui) {
+            save_options();
+        }
+    }).disableSelection();
+    $('input:checkbox').click(function(){
         save_options();
     });
     $('#defaults').click(function(){
@@ -124,8 +132,8 @@ $(document).ready(function(){
 </head>
 <body>
 <h1>NZBMatrixIMDb Configuration</h1>
+<div class="tip"><b>Tip</b>: drag & drop the rows to reorder the appearance in nzbmatrix.com.</div>
 <div id="table"></div>
-<input id="save" type="submit" value="Save" />
 <input id="defaults" type="submit" value="Load Defaults" />
 </body>
 </html>
