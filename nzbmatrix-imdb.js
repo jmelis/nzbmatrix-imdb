@@ -19,7 +19,7 @@ function rating(json) {
     var full_rating;
     var rating = json["Rating"];
 
-    if (rating.match("N/A")) {
+    if (typeof(rating) == "undefined" || rating.match("N/A")) {
         full_rating = "Not available.";
     } else {
         voters = integer_comma(json["Votes"]);
@@ -65,6 +65,9 @@ function info_view(view, json, start_str, end_str) {
             opt_info = rating(json);
         } else {
             opt_info = json[option];
+            if (typeof(opt_info) == "undefined") {
+                opt_info = "Not available.";
+            }
         }
 
         info += decorate(view, option, opt_info);
