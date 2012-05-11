@@ -17,12 +17,12 @@ function integer_comma(num) {
 
 function rating(json) {
     var full_rating;
-    var rating = json["Rating"];
+    var rating = json["imdbRating"];
 
     if (typeof(rating) == "undefined" || rating.match("N/A")) {
         full_rating = "Not available.";
     } else {
-        voters = integer_comma(json["Votes"]);
+        voters = integer_comma(json["imdbVotes"]);
         full_rating = rating + "/10" + ' (' + voters + ' votes)';
     }
     return full_rating;
